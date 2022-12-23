@@ -6,21 +6,20 @@ import (
 	"os"
 	"testing"
 
-	_ "neilpa.me/go-stbi/bmp"
-	_ "neilpa.me/go-stbi/gif"
-	_ "neilpa.me/go-stbi/jpeg"
-	_ "neilpa.me/go-stbi/png"
+	_ "huoshan017/go-stbi/bmp"
+	_ "huoshan017/go-stbi/gif"
+	_ "huoshan017/go-stbi/jpeg"
+	_ "huoshan017/go-stbi/png"
 )
 
-
-var tests = []struct{
-	path string
+var tests = []struct {
+	path          string
 	width, height int
-} {
-	{ "testdata/red.16x8.bmp", 16, 8 },
-	{ "testdata/red.16x8.gif", 16, 8 },
-	{ "testdata/red.16x8.jpg", 16, 8 },
-	{ "testdata/red.16x8.png", 16, 8 },
+}{
+	{"testdata/red.16x8.bmp", 16, 8},
+	{"testdata/red.16x8.gif", 16, 8},
+	{"testdata/red.16x8.jpg", 16, 8},
+	{"testdata/red.16x8.png", 16, 8},
 }
 
 func TestDecode(t *testing.T) {

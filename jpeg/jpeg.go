@@ -5,11 +5,11 @@ package jpeg // import "neilpa.me/go-stbi/jpeg"
 import (
 	"encoding/binary"
 	"errors"
-	"io"
 	"image"
 	"image/color"
+	"io"
 
-	"neilpa.me/go-stbi"
+	"huoshan017/go-stbi"
 )
 
 // Header is the magic string at the start of a JPEG file.
@@ -42,15 +42,19 @@ func DecodeConfig(r io.Reader) (image.Config, error) {
 	for {
 		err = binary.Read(r, binary.BigEndian, &h)
 		if err != nil {
-			return cfg, err
+			break
 		}
 		if h.Sentinel != 0xff {
-			return cfg, ErrInvalid
+			err = ErrInvalid
+			break
 		}
 		switch h.Marker {
 		// Start of frames
 		case 0xc0, 0xc1, 0xc2:
-			var dim struct { _ byte; H, W uint16 }
+			var dim struct {
+				_    byte
+				H, W uint16
+			}
 			err = binary.Read(r, binary.BigEndian, &dim)
 			cfg.Width, cfg.Height = int(dim.W), int(dim.H)
 			return cfg, err
@@ -61,10 +65,13 @@ func DecodeConfig(r io.Reader) (image.Config, error) {
 			}
 			// The length above includes the 2 bytes for the length itself
 			err = binary.Read(r, binary.BigEndian, buf[:int(h.Length)-2])
+			if err != nil {
+				return cfg, err
+			}
 		}
 	}
 
-	return cfg, ErrInvalid
+	return cfg, err
 }
 
 func init() {
@@ -73,5 +80,5 @@ func init() {
 
 type segmentHeader struct {
 	Sentinel, Marker byte
-	Length uint16
+	Length           uint16
 }

@@ -1,3 +1,3 @@
-module neilpa.me/go-stbi
+module huoshan017/go-stbi
 
 go 1.13

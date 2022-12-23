@@ -2,7 +2,7 @@
 //
 // See subpackages for format specific codecs for use with image.Decode and
 // image.DecodeConfig.
-package stbi // import "neilpa.me/go-stbi"
+package stbi // import "huoshan017/go-stbi"
 
 import (
 	"errors"
@@ -33,7 +33,7 @@ func Load(path string) (*image.RGBA, error) {
 	defer C.stbi_image_free(unsafe.Pointer(data))
 
 	return &image.RGBA{
-		Pix:	C.GoBytes(unsafe.Pointer(data), y*x*4),
+		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*4),
 		Stride: 4,
 		Rect:   image.Rect(0, 0, int(x), int(y)),
 	}, nil
@@ -58,7 +58,7 @@ func LoadFile(f *os.File) (*image.RGBA, error) {
 	defer C.stbi_image_free(unsafe.Pointer(data))
 
 	return &image.RGBA{
-		Pix:	C.GoBytes(unsafe.Pointer(data), y*x*4),
+		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*4),
 		Stride: 4,
 		Rect:   image.Rect(0, 0, int(x), int(y)),
 	}, nil
@@ -77,7 +77,7 @@ func LoadMemory(b []byte) (*image.RGBA, error) {
 	defer C.stbi_image_free(unsafe.Pointer(data))
 
 	return &image.RGBA{
-		Pix:	C.GoBytes(unsafe.Pointer(data), y*x*4),
+		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*4),
 		Stride: 4,
 		Rect:   image.Rect(0, 0, int(x), int(y)),
 	}, nil
@@ -94,4 +94,14 @@ func LoadReader(r io.Reader) (*image.RGBA, error) {
 		return nil, err
 	}
 	return LoadMemory(b)
+}
+
+func SetFlipVerticallyOnLoad(flagTrueIfShouldFlip bool) {
+	C.stbi_set_flip_vertically_on_load(func() C.int {
+		if flagTrueIfShouldFlip {
+			return 1
+		} else {
+			return 0
+		}
+	}())
 }

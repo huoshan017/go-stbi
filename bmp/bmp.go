@@ -5,11 +5,11 @@ package bmp // import "neilpa.me/go-stbi/bmp"
 import (
 	"encoding/binary"
 	"errors"
-	"io"
 	"image"
 	"image/color"
+	"io"
 
-	"neilpa.me/go-stbi"
+	"huoshan017/go-stbi"
 )
 
 // Header is the magic string at the start of a BMP file.
@@ -26,7 +26,7 @@ func Decode(r io.Reader) (image.Image, error) {
 // DecodeConfig returns the dimensions and an RGBA color model of the BMP
 // backed by reader. Returns ErrInvalid if the file isn't a BMP.
 func DecodeConfig(r io.Reader) (image.Config, error) {
-	cfg := image.Config{ ColorModel: color.RGBAModel }
+	cfg := image.Config{ColorModel: color.RGBAModel}
 
 	var h bmpHeader
 	err := binary.Read(r, binary.LittleEndian, &h)
@@ -66,10 +66,10 @@ func init() {
 }
 
 type bmpHeader struct {
-	Magic [2]byte
-	FileSize uint32
-	Reserved1 uint16
-	Reserved2 uint16
+	Magic      [2]byte
+	FileSize   uint32
+	Reserved1  uint16
+	Reserved2  uint16
 	DataOffset uint32
-	DIBSize uint32
+	DIBSize    uint32
 }

@@ -5,11 +5,11 @@ package png // import "neilpa.me/go-stbi/png"
 import (
 	"encoding/binary"
 	"errors"
-	"io"
 	"image"
 	"image/color"
+	"io"
 
-	"neilpa.me/go-stbi"
+	"huoshan017/go-stbi"
 )
 
 // Header is the magic string at the start of a PNG file.
@@ -50,9 +50,9 @@ func init() {
 
 // pngHeader is enough to decode up to the width and height.
 type pngHeader struct {
-	Magic [8]byte
+	Magic     [8]byte
 	ChunkSize uint32
 	ChunkType [4]byte
-	Width uint32
-	Height uint32
+	Width     uint32
+	Height    uint32
 }

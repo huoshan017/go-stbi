@@ -5,11 +5,11 @@ package gif // import "neilpa.me/go-stbi/gif"
 import (
 	"encoding/binary"
 	"errors"
-	"io"
 	"image"
 	"image/color"
+	"io"
 
-	"neilpa.me/go-stbi"
+	"huoshan017/go-stbi"
 )
 
 // Header is the magic string at the start of a GIF file.
@@ -27,7 +27,7 @@ func Decode(r io.Reader) (image.Image, error) {
 // backed by reader. Returns ErrInvalid if the file isn't a GIF.
 func DecodeConfig(r io.Reader) (image.Config, error) {
 	// TODO Make sure we get the right color model?
-	cfg := image.Config{ ColorModel: color.RGBAModel }
+	cfg := image.Config{ColorModel: color.RGBAModel}
 
 	var h gifHeader
 	err := binary.Read(r, binary.LittleEndian, &h)
@@ -46,7 +46,7 @@ func init() {
 }
 
 type gifHeader struct {
-	Magic [6]byte
-	Width uint16
+	Magic  [6]byte
+	Width  uint16
 	Height uint16
 }
