@@ -6,10 +6,10 @@ import (
 	"os"
 	"testing"
 
-	_ "huoshan017/go-stbi/bmp"
-	_ "huoshan017/go-stbi/gif"
-	_ "huoshan017/go-stbi/jpeg"
-	_ "huoshan017/go-stbi/png"
+	_ "github.com/huoshan017/go-stbi/bmp"
+	_ "github.com/huoshan017/go-stbi/gif"
+	_ "github.com/huoshan017/go-stbi/jpeg"
+	_ "github.com/huoshan017/go-stbi/png"
 )
 
 var tests = []struct {

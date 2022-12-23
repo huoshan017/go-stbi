@@ -1,3 +1,3 @@
-module huoshan017/go-stbi
+module github.com/huoshan017/go-stbi
 
-go 1.13
+go 1.18

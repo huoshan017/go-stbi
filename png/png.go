@@ -9,7 +9,7 @@ import (
 	"image/color"
 	"io"
 
-	"huoshan017/go-stbi"
+	"github.com/huoshan017/go-stbi"
 )
 
 // Header is the magic string at the start of a PNG file.
