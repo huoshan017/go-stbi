@@ -20,12 +20,12 @@ import (
 import "C"
 
 // Load wraps stbi_load to decode an image into an RGBA pixel struct.
-func Load(path string) (*image.RGBA, error) {
+func Load(path string, channelsInFile *int32, desiredChannels int32) (*image.RGBA, error) {
 	cpath := C.CString(path)
 	defer C.free(unsafe.Pointer(cpath))
 
 	var x, y C.int
-	data := C.stbi_load(cpath, &x, &y, nil, 4)
+	data := C.stbi_load(cpath, &x, &y, (*C.int)(channelsInFile), C.int(desiredChannels))
 	if data == nil {
 		msg := C.GoString(C.stbi_failure_reason())
 		return nil, errors.New(msg)
@@ -41,7 +41,7 @@ func Load(path string) (*image.RGBA, error) {
 
 // LoadFile wraps stbi_load_from_file to decode an image into an RGBA pixel
 // struct.
-func LoadFile(f *os.File) (*image.RGBA, error) {
+func LoadFile(f *os.File, channelsInFile *int32, desiredChannels int32) (*image.RGBA, error) {
 	mode := C.CString("rb")
 	defer C.free(unsafe.Pointer(mode))
 	fp, err := C.fdopen(C.int(f.Fd()), mode)
@@ -50,7 +50,7 @@ func LoadFile(f *os.File) (*image.RGBA, error) {
 	}
 
 	var x, y C.int
-	data := C.stbi_load_from_file(fp, &x, &y, nil, 4)
+	data := C.stbi_load_from_file(fp, &x, &y, (*C.int)(channelsInFile), C.int(desiredChannels))
 	if data == nil {
 		msg := C.GoString(C.stbi_failure_reason())
 		return nil, errors.New(msg)
@@ -66,10 +66,10 @@ func LoadFile(f *os.File) (*image.RGBA, error) {
 
 // LoadMemory wraps stbi_load_from_memory to decode an image into an RGBA
 // pixel struct.
-func LoadMemory(b []byte) (*image.RGBA, error) {
+func LoadMemory(b []byte, channelsInFile *int32, desiredChannels int32) (*image.RGBA, error) {
 	var x, y C.int
 	mem := (*C.uchar)(unsafe.Pointer(&b[0]))
-	data := C.stbi_load_from_memory(mem, C.int(len(b)), &x, &y, nil, 4)
+	data := C.stbi_load_from_memory(mem, C.int(len(b)), &x, &y, (*C.int)(channelsInFile), C.int(desiredChannels))
 	if data == nil {
 		msg := C.GoString(C.stbi_failure_reason())
 		return nil, errors.New(msg)
@@ -85,15 +85,15 @@ func LoadMemory(b []byte) (*image.RGBA, error) {
 
 // LoadReader delegates to LoadFile if r is an *os.File, otherwise,
 // LoadMemory after reading the contents.
-func LoadReader(r io.Reader) (*image.RGBA, error) {
+func LoadReader(r io.Reader, channelsInFile *int32, desiredChannels int32) (*image.RGBA, error) {
 	if f, ok := r.(*os.File); ok {
-		return LoadFile(f)
+		return LoadFile(f, channelsInFile, desiredChannels)
 	}
 	b, err := ioutil.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
-	return LoadMemory(b)
+	return LoadMemory(b, channelsInFile, desiredChannels)
 }
 
 func SetFlipVerticallyOnLoad(flagTrueIfShouldFlip bool) {

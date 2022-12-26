@@ -20,7 +20,7 @@ var ErrInvalid = errors.New("Invalid GIF")
 
 // Decode reads a GIF image from r and returns an image.RGBA.
 func Decode(r io.Reader) (image.Image, error) {
-	return stbi.LoadReader(r)
+	return stbi.LoadReader(r, nil, 4)
 }
 
 // DecodeConfig returns the dimensions and an RGBA color model of the GIF
