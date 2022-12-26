@@ -33,7 +33,7 @@ func Load(path string, channelsInFile *int32, desiredChannels int32) (*image.RGB
 	defer C.stbi_image_free(unsafe.Pointer(data))
 
 	return &image.RGBA{
-		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*4),
+		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*C.int(*channelsInFile)),
 		Stride: 4,
 		Rect:   image.Rect(0, 0, int(x), int(y)),
 	}, nil
@@ -58,7 +58,7 @@ func LoadFile(f *os.File, channelsInFile *int32, desiredChannels int32) (*image.
 	defer C.stbi_image_free(unsafe.Pointer(data))
 
 	return &image.RGBA{
-		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*4),
+		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*C.int(*channelsInFile)),
 		Stride: 4,
 		Rect:   image.Rect(0, 0, int(x), int(y)),
 	}, nil
@@ -77,7 +77,7 @@ func LoadMemory(b []byte, channelsInFile *int32, desiredChannels int32) (*image.
 	defer C.stbi_image_free(unsafe.Pointer(data))
 
 	return &image.RGBA{
-		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*4),
+		Pix:    C.GoBytes(unsafe.Pointer(data), y*x*C.int(*channelsInFile)),
 		Stride: 4,
 		Rect:   image.Rect(0, 0, int(x), int(y)),
 	}, nil
